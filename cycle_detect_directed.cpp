@@ -10,15 +10,14 @@ enum Colour
     BLACK
 };
 
-bool dfs(Graph& g, const string& node, map<string, int>& colours)
+bool dfs(Graph& g, const string& node, map<string, Colour>& colours)
 {
     colours[node] = GRAY;
     for(auto& adj : g[node])
     {
-        auto& c = colours[adj];
-        if(c == BLACK) continue;
+        Colour c = colours[adj];
         if(c == GRAY) return true;
-        else if(dfs(g, adj, colours)) return true;
+        else if(c == WHITE && dfs(g, adj, colours)) return true;
     }
     colours[node] = BLACK;
     return false;
@@ -26,7 +25,7 @@ bool dfs(Graph& g, const string& node, map<string, int>& colours)
 
 bool is_cycle(Graph& g)
 {
-    map<string, int> colours;
+    map<string, Colour> colours;
     for(auto& node : g)
     {
         if(colours[node.first] == BLACK) continue;
@@ -72,4 +71,3 @@ int main()
 
     cout << (is_cycle(graph) ? "impossible" : "possible") << endl;
 }
-
